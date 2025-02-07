@@ -26,8 +26,8 @@ module ActiveSupport
       end
     end
 
-    def self.dispatch(error, name) # :nodoc:
-      actions(error).fetch(name).call
+    def self.dispatch(error, name, context = nil) # :nodoc:
+      actions(error).fetch(name).call(context)
     rescue KeyError
       raise NonActionable, "Cannot find action \"#{name}\""
     end

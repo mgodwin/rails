@@ -94,6 +94,7 @@ module ActionController
   end
 
   class MissingExactTemplate < UnknownFormat # :nodoc:
+    include ActiveSupport::ActionableError
     attr_reader :controller, :action_name
 
     def initialize(message, controller, action_name)
@@ -101,6 +102,12 @@ module ActionController
       @action_name = action_name
 
       super(message)
+    end
+
+    action "Add a template for this action" do |context|
+      require 'rails/generators'
+      params = Rails.application.routes.recognize_path(context.params[:location])
+      Rails::Generators.invoke "erb:controller", [params[:controller], params[:action]], debug: true
     end
   end
 end

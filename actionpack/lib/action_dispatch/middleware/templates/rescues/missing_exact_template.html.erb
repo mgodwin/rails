@@ -4,6 +4,7 @@
 
 <main id="container">
   <h2><%= h @exception.message %></h2>
+  <%= render "rescues/actions", exception: @exception, request: @request, exception_wrapper: @exception_wrapper %>
 
   <div class="summary">
     <p>
