@@ -1,3 +1,33 @@
+*   Fix migrating multiple databases with `ActiveRecord::PendingMigration` action.
+
+    *Gannon McGibbon*
+
+*   Enable automatically retrying idempotent association queries on connection
+    errors.
+
+    *Hartley McGuire*
+
+*   Add `allow_retry` to `sql.active_record` instrumentation.
+
+    This enables identifying queries which queries are automatically retryable on connection errors.
+
+    *Hartley McGuire*
+
+*   Better support UPDATE with JOIN for Postgresql and SQLite3
+
+    Previously when generating update queries with one or more JOIN clauses,
+    Active Record would use a sub query which would prevent to reference the joined
+    tables in the `SET` clause, for instance:
+
+    ```ruby
+    Comment.joins(:post).update_all("title = posts.title")
+    ```
+
+    This is now supported as long as the relation doesn't also use a `LIMIT`, `ORDER` or
+    `GROUP BY` clause. This was supported by the MySQL adapter for a long time.
+
+    *Jean Boussier*
+
 *   Introduce a before-fork hook in `ActiveSupport::Testing::Parallelization` to clear existing
     connections, to avoid fork-safety issues with the mysql2 adapter.
 
